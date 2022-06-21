@@ -1,4 +1,4 @@
-// https://sourceforge.net/p/golly/code/ci/master/tree/Scripts/Python/glife/ReadRuleTable.py
+// https://sourceforge.net/p/golly/code/ci/master/tree/Scripts/Python/glife/ReadRuleTable.py, but not quite
 
 function permu2(xs) {
     if (xs.length < 2) return [xs];
@@ -261,53 +261,52 @@ function parseTable(text) {
             entries = line.replace(/[={}\n\s]/, '').split(/,+/);
             if (entries.length !== num_entries) throw `Wrong number of entries on this line: ${line} (got ${entries.length}, expected ${num_entries})`;
             entries = entries.map(e => e in vars ? e : parseInt(e));
-            var bound_vars = entries.filter((e, i) => !entries.slice(i + 1).includes(e) && e in vars && entries.filter(ee => ee === e).length > 1);
-            var var_val_indices = Object.assign({}, ...bound_vars.map(x => { var y = {}; y[x] = 0; return y; }));
-            while (true) {
-                var transition = [];
-                for (e of entries) {
-                    if (bound_vars.includes(e))
-                        transition.push([vars[e][var_val_indices[e]]]);
-                    else if (e in vars)
-                        transition.push(vars[e]);
-                    else
-                        transition.push([parseInt(e)]);
+            if (symmetry_string === 'permute' && PERMUTE_LATER.includes(neighborhood)) {
+                for (var permuted_section of permu2(entries.slice(1, -1))) {
+                    var permuted_transition = [entries[0]].concat(permuted_section).concat(entries[entries.length - 1]);
+                    if (!transitions.includes(permuted_transition)) transitions.push(permuted_transition);
                 }
-                if (symmetry_string === 'permute' && PERMUTE_LATER.includes(neighborhood)) {
-                    for (var permuted_section of permu2(transition.slice(1, -1))) {
-                        var permuted_transition = [transition[0]].concat(permuted_section).concat(transition[transition.length - 1]);
-                        if (!transitions.includes(permuted_transition)) transitions.push(permuted_transition);
-                    }
-                } else {
-                    for (var sy of symmetry) {
-                        var tran = sy.map(i => transition[i]);
-                        if (!transitions.includes(tran)) transitions.push(tran);
-                    }
+            } else {
+                for (var order of symmetry) {
+                    var tran = order.map(i => entries[i]);
+                    if (!transitions.includes(tran)) transitions.push(tran);
                 }
-                var var_val_to_change = 0;
-                while (var_val_to_change < bound_vars.length) {
-                    var var_label = bound_vars[var_val_to_change];
-                    if (var_val_indices[var_label] < vars[var_label].length - 1) {
-                        var_val_indices[var_label]++;
-                        break;
-                    }
-                    else {
-                        var_val_indices[var_label] = 0;
-                        var_val_to_change++;
-                    }
-                }
-                if (var_val_to_change >= bound_vars.length) break;
             }
         }
     }
     return {
-        n_states, neighborhood, num_neighbors: num_entries - 2, transitions,
+        n_states, neighborhood, num_neighbors: num_entries - 2, transitions, vars,
         slowcalc(...args) {
-            var temp = transitions.slice();
-            for (var i = 0; i < args.length - 1; i++) {
-                temp = temp.filter(t => t[i].includes(args[i]));
+            if (args.length + 1 !== num_entries)
+                throw `Bad number of arguments to slowcalc()`;
+            for (var tran of transitions) {
+                var boundVars = {};
+                var matched = true;
+                for (var i = 0; i < tran.length - 1; i++) {
+                    if (typeof tran[i] === 'string' && tran[i] in vars) {
+                        if (tran[i] in boundVars && boundVars[tran[i]] !== args[i]) {
+                            matched = false;
+                            break;
+                        }
+                        else if (vars[tran[i]].includes(args[i])) {
+                            boundVars[tran[i]] = args[i];
+                        }
+                        else {
+                            matched = false;
+                            break;
+                        }
+                    }
+                    else if (tran[i] !== args[i]) {
+                        matched = false;
+                        break;
+                    }
+                }
+                if (matched) {
+                    if (tran[tran.length - 1] in vars) return boundVars[tran[tran.length - 1]];
+                    else return tran[tran.length - 1];
+                }
             }
-            return temp[0]?.[args.length - 1]?.[0] ?? args[args.length - 1];
+            return args[0]; // default: no change
         }
     };
 }
