@@ -72,7 +72,7 @@ const SYMMETRIES = {
             [0, 1, 2, 3, 4, 5],
             [0, 1, 4, 3, 2, 5]
         ],
-        permute: undefined, // special case; handled by code below
+        permute: [[0, 1, 2, 3, 4, 5]], // special case; handled by code below
     },
     Moore: {
         none: [
@@ -126,7 +126,7 @@ const SYMMETRIES = {
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
             [0, 1, 8, 7, 6, 5, 4, 3, 2, 9]
         ],
-        permute: undefined // special case; handled by code below
+        permute: [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]] // special case; handled by code below
     },
     Margolus: _MARGOLUS,
     square4_figure8v: _MARGOLUS,
@@ -149,7 +149,7 @@ const SYMMETRIES = {
             [0, 1, 3, 2, 4],
             [0, 2, 1, 3, 4]
         ],
-        permute: undefined // special case; handled by code below
+        permute: [[0, 1, 2, 3, 4]] // special case; handled by code below
     },
     triangularMoore: {
         none: [
@@ -168,7 +168,7 @@ const SYMMETRIES = {
             [0, 2, 1, 3, 6, 5, 4, 12, 11, 10, 9, 8, 7, 13],
             [0, 1, 3, 2, 12, 11, 10, 9, 8, 7, 6, 5, 4, 13]
         ],
-        permute: undefined, // special case; handled by code below
+        permute: [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]], // special case; handled by code below
     },
     oneDimensional: {
         none: [
@@ -215,18 +215,9 @@ const SYMMETRIES = {
             [0, 2, 1, 6, 5, 4, 3, 7],
             [0, 1, 6, 5, 4, 3, 2, 7]
         ],
-        permute: undefined, // special case; handled by code below
+        permute: [[0, 1, 2, 3, 4, 5, 6, 7]], // special case; handled by code below
     },
 };
-
-// fill in permutations
-for (var symmetry in SYMMETRIES) {
-    if (SYMMETRIES[symmetry].permute === undefined) {
-        var unperm = SYMMETRIES[symmetry].none[0];
-        var inner = unperm.slice(1, -1);
-        SYMMETRIES[symmetry].permute = permu2(inner).map(i => [unperm[0]].concat(i).concat([unperm[unperm.length - 1]]));
-    }
-}
 
 function parseTable(text) {
     var vars = {};
@@ -270,9 +261,16 @@ function parseTable(text) {
             entries = line.replace(/[={}\n\s]/, '').split(/,+/);
             if (entries.length !== num_entries) throw `Wrong number of entries on this line: ${line} (got ${entries.length}, expected ${num_entries})`;
             entries = entries.map(e => e in vars ? e : parseInt(e));
-            for (var order of symmetry) {
-                var tran = order.map(i => entries[i]);
-                transitions.push(tran);
+            if (symmetry_string === 'permute' && PERMUTE_LATER.includes(neighborhood)) {
+                for (var permuted_section of permu2(entries.slice(1, -1))) {
+                    var permuted_transition = [entries[0]].concat(permuted_section).concat(entries[entries.length - 1]);
+                    transitions.push(permuted_transition);
+                }
+            } else {
+                for (var order of symmetry) {
+                    var tran = order.map(i => entries[i]);
+                    transitions.push(tran);
+                }
             }
         }
     }
