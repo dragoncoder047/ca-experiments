@@ -22,15 +22,15 @@ runButton.addEventListener('click', async () => {
     var text = textbox.value;
     var result, startTime = +new Date();
     try {
-        showStatus('Parsing table, expanding vars...', 'black');
-        await foobar();
+        showStatus('Parsing table, expanding vars...');
         result = parseTable(text);
+        await foobar();
     } catch (e) {
         showStatus(e, 'red');
         throw e;
     }
     var { n_states, neighborhood, num_neighbors, slowcalc, transitions } = result;
-    showStatus('Converting to tree...', 'black');
+    showStatus('Converting to tree...');
     var nodes;
     try {
         nodes = functionToTree(n_states, num_neighbors, slowcalc);
