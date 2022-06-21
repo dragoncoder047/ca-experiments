@@ -246,9 +246,9 @@ function parseTable(text) {
         }
         else if (line.startsWith('var ')) {
             line = line.slice(4);
-            line = line.replace(/#.*$/, '');
+            line = line.replaceAll(/#.*$/, '');
             [varname, line] = line.split(/(?<!=.*)\s*=\s*/, 2);
-            entries = line.replace(/[={}\n\s]/, '').split(/,+/);
+            entries = line.replaceAll(/[={}\n\s]/, '').split(/,+/);
             var s = [];
             for (e of entries) {
                 if (e in vars) s.push(...vars[e]);
@@ -257,8 +257,8 @@ function parseTable(text) {
             vars[varname] = s;
         }
         else { // transition
-            line = line.replace(/#.*$/, '');
-            entries = line.replace(/[={}\n\s]/, '').split(/,+/);
+            line = line.replaceAll(/#.*$/, '');
+            entries = line.replaceAll(/[={}\n\s]/, '').split(/,+/);
             if (entries.length !== num_entries) throw `Wrong number of entries on this line: ${line} (got ${entries.length}, expected ${num_entries})`;
             entries = entries.map(e => e in vars ? e : parseInt(e));
             if (symmetry_string === 'permute' && PERMUTE_LATER.includes(neighborhood)) {
