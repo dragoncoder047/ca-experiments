@@ -264,12 +264,12 @@ function parseTable(text) {
             if (symmetry_string === 'permute' && PERMUTE_LATER.includes(neighborhood)) {
                 for (var permuted_section of permu2(entries.slice(1, -1))) {
                     var permuted_transition = [entries[0]].concat(permuted_section).concat(entries[entries.length - 1]);
-                    if (!transitions.includes(permuted_transition)) transitions.push(permuted_transition);
+                    transitions.push(permuted_transition);
                 }
             } else {
                 for (var order of symmetry) {
                     var tran = order.map(i => entries[i]);
-                    if (!transitions.includes(tran)) transitions.push(tran);
+                    transitions.push(tran);
                 }
             }
         }
