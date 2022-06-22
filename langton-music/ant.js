@@ -58,6 +58,7 @@ class Ant {
         this.commands = commands;
         this.queue = [];
         this.halted = false;
+        this.dead = false;
     }
     tick() {
         this.ensureQueueNotEmpty();
@@ -170,5 +171,9 @@ class Ant {
         dir = parseInt(dir);
         state = parseInt(state ?? 1);
         this.antList.push(this.breeder.createAnt(breed, this.world, this.x, this.y, (dir + this.dir) % 4, state, this.antList));
+    }
+    do_die(arg) {
+        if (arg) throw `die() takes no argument`;
+        this.dead = true;
     }
 }

@@ -102,6 +102,7 @@ function tick() {
         runEnable(false);
         showStatus('All ants are halted.', 'blue');
     }
+    ants.forEach(ant => { if (ant.dead) ants.splice(ants.indexOf(ant), 1); });
     if (!ants.length) {
         stop();
         runEnable(false);
