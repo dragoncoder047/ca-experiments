@@ -4,6 +4,7 @@
         <title>Langton-Music Format</title>
         <style>
             table, thead, tbody, tr, th, td { border: 1px solid gray; border-collapse: collapse; }
+            th, td { padding: 0.25em; }
             pre, code { color: blue; }
             blockquote { border-left: 3px solid gray; padding-left: 1em; margin-left: 1em; }
         </style>
@@ -18,6 +19,7 @@
             <li>A bunch of ant "breeds"</li>
             <li>Some RLE data to specify the cells on the grid and the placement of the ants</li>
         </ul>
+        <p>Addidtionally you can put sigle line comments anywhere in the text by preceding the coment with <code>%%</code></p>
 
         <h2>Header</h2>
         <p>This is pretty simple. They syntax is simply <code>key: value;</code> repeated as many times as necessary, with
@@ -63,7 +65,7 @@
         <p>Second, after a run of non-"$" cells, there can be an ant.</p>
         <p>An ant looks like <code>[breed:dir:state]</code> where <code>breed</code> is a breed from the ant breeds section, <code>dir</code> is 0, 1, 2, or 3
             corresponding to N, E, S, or W, and <code>state</code> (which is optional) is the initial state the ant is in. It deaults to 1 if both the state and colon
-            are left out. If the colon is not left out that means the intial state is the empty string.</p>
+            are left out. If the colon is not left out that is an error.</p>
         <p>Otherwise this is just the same as Golly RLE format:</p>
         <blockquote>For rules with more than two states, a "." represents a zero state; states 1..24 are represented by "A".."X", states 25..48 by "pA".."pX",
             states 49..72 by "qA".."qX", and on up to states 241..255 represented by "yA".."yO".</blockquote>
@@ -87,14 +89,45 @@
                     <td>Turn right or left that many steps (step = 90 degrees). Defaults to 1 if argument is omitted.</td>
                 </tr>
                 <tr>
+                    <td><code>dir(num)</code></td>
+                    <td>Set the direction to <code>num</code>. Use of this command turns the ant into an <strong>absolute turmite</strong>.</td>
+                </tr>
+                <tr>
                     <td><code>put(state)</code></td>
                     <td>Set the cell the ant is sitting on to <code>state</code> (which must be a number).</td>
                 </tr>
                 <tr>
                     <td><code>state(num)</code></td>
-                    <td>Sets the ant's internal state to <code>num</code>.</td>
+                    <td>Sets the ant's internal state to <code>num</code>. Use of this command turns the ant into an <strong>turmite</strong>.</td>
+                </tr>
+                <tr>
+                    <td><code>spawn(breed:dir:state)</code></td>
+                    <td>Spawn an ant of breed <code>breed</code> here, in state <code>state</code> and facing in <code>dir</code>.
+                        <code>dir</code> is relative, meaning 0 = same way as me, 1 = right turn from me, etc.</td>
+                </tr>
+                <tr>
+                    <td><code>die</code></td>
+                    <td>Mark this ant as dead, so it will be removed.</td>
                 </tr>
             </tbody>
         </table>
+        <h2><code>Beetle</code> and <code>Cricket</code></h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>What it does</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>play(note)</code>></td>
+                    <td>Play that note for 1 tick. <code>note</code> can be a number, which is a frequency in hertz, or a note name
+                        string such as <code>Bb5</code> which is converted to the frequency of theat piano note.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><code>Beetle</code> (think: "beat") uses a <a href="https://tonejs.github.io/docs/14.7.77/MembraneSynth"><code>Tone.MembraneSynth</code></a>,
+            whereas <code>Cricket</code> uses a <a href="https://tonejs.github.io/docs/14.7.77/AMSynth"><code>Tone.AMSynth</code></a>.</p>
     </body>
 </html>

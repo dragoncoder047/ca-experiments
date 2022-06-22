@@ -34,4 +34,21 @@ class World {
     clear() {
         this.cells = {};
     }
+    bbox(ants) {
+        var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, got = false;
+        for (var cell of Object.getOwnPropertyNames(this.cells)) {
+            var [x, y] = cell.split(',');
+            x = parseInt(x); y = parseInt(y);
+            minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+            got = true;
+        }
+        for (var ant of ants) {
+            minX = Math.min(minX, ant.x); maxX = Math.max(maxX, ant.x);
+            minY = Math.min(minY, ant.y); maxY = Math.max(maxY, ant.y);
+            got = true;
+        }
+        if (!got) return { tl: [0, 0], br: [0, 0] };
+        return { tl: [minX, minY], br: [maxX, maxY] };
+    }
 }

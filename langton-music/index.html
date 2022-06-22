@@ -10,16 +10,20 @@
     <body>
         <h1>Langton's Ant Music</h1>
         <p><button id="loadbtn">Load</button> <button id="startstop">Start</button> <button id="step">Step</button> <output id="statusbar"></output></p>
+        <p>Step: <output id="stepnum"></output></p>
+        <p><button id="fit">Fit to Window</button><label for="autofit"><input type="checkbox" checked name="autofit" id="autofit">Autofit</label></p>
         <canvas id="playfield"></canvas>
         <p>Input text</p>
-        <textarea id="textbox" style="width: 90%" rows="20">[Ant langton
-  {1:0 => put(1) rt fd}
-  {1:1 => put(0) lt fd}
+        <textarea id="textbox" style="width: 90%" rows="20" spellcheck="false">bpm: 120
+[Beetle langton
+  {1:0 => put(1) rt fd play(C2)}
+  {1:1 => put(0) lt fd play(G2)}
 ]
 .[langton:1:1]
 </textarea>
         <p><a href="format.html">Formatting/syntax guide</a></p>
         <script src="ant.js"></script>
+        <script src="notes.js"></script>
         <script src="antsparser.js"></script>
         <script src="canvasmove.js"></script>
         <script src="world.js"></script>
