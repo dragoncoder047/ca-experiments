@@ -3,26 +3,26 @@
     <head>
         <title>Langton's Ant Music</title>
         <style>
-            .flex { display: flex }
-            .row { flex-direction: row }
-            .col { flex-direction: column }
+            canvas { border: 1px solid black; }
         </style>
         <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.1.2/dist/svg.min.js"></script>
     </head>
     <body>
         <h1>Langton's Ant Music</h1>
-        <p><a href="format.html">Formatting</a></p>
-        <div class="flex row">
-            <div class="flex col">
-                <p>Input text</p>
-                <textarea id="textbox" style="width: 40%" rows="40"></textarea>
-            </div>
-            <div class="flex col">
-                <p><button id="loadbtn">Load</button><button id="startstop">Start</button></p>
-                <svg id="playfield" width="400" height="400"></svg>
-            </div>
-        </div>
+        <p><button id="loadbtn">Load</button> <button id="startstop">Start</button> <button id="step">Step</button> <output id="statusbar"></output></p>
+        <canvas id="playfield"></canvas>
+        <p>Input text</p>
+        <textarea id="textbox" style="width: 90%" rows="20">[Ant langton
+  {1:0 => put(1) rt fd}
+  {1:1 => put(0) lt fd}
+]
+.[langton:1:1]
+</textarea>
+        <p><a href="format.html">Formatting/syntax guide</a></p>
+        <script src="ant.js"></script>
+        <script src="antsparser.js"></script>
+        <script src="canvasmove.js"></script>
+        <script src="world.js"></script>
         <script src="langton.js"></script>
     </body>
 </html>

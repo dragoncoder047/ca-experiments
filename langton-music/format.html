@@ -2,9 +2,99 @@
 <html>
     <head>
         <title>Langton-Music Format</title>
+        <style>
+            table, thead, tbody, tr, th, td { border: 1px solid gray; border-collapse: collapse; }
+            pre, code { color: blue; }
+            blockquote { border-left: 3px solid gray; padding-left: 1em; margin-left: 1em; }
+        </style>
     </head>
     <body>
         <h1>Langton-Music Format</h1>
-        <p><a href="index.html">BACK.</a></p>
+        <p><a href="index.html">&lt;BACK&lt;</a></p>
+
+        <p>The format is based on 3 sections:</p>
+        <ul>
+            <li>A header, of key-value pairs</li>
+            <li>A bunch of ant "breeds"</li>
+            <li>Some RLE data to specify the cells on the grid and the placement of the ants</li>
+        </ul>
+
+        <h2>Header</h2>
+        <p>This is pretty simple. They syntax is simply <code>key: value;</code> repeated as many times as necessary, with
+            whitespace completely ignored, and the last semicolon optional.</p>
+        <p>There is one rule: <code>key</code> must be all letters (no numbers, symbols, or whitespace), whereas <code>value</code>
+            can be anything that isn't a semicolon (which would trip up the parser).</p>
+        <p>Supported options are:</p>
+        <ul>
+            <li><code>TODO</code></li>
+        </ul>
+
+        <h2>Ant Breeds</h2>
+        <p>This is significantly more complicated than the header, and uses a double loop in the parser.</p>
+        <p>Each "breed" of ant is enclosed in square brackets. Within the brackets lie 3 pieces of data, separated by spaces:</p>
+        <ol>
+            <li>The species of the ant</li>
+            <li>The name of the ant breed</li>
+            <li>The rules for moving around, changing the world, etc.</li>
+        </ol>
+        <p><strong>Ant Species</strong>: This determines what "type" of ant it is; namely; what features are available to it.</p>
+        <p><strong>Ant Name</strong>: This is arbitrary, all it is for is to be able to reference it in the pattern.</p>
+        <p><strong>Rules</strong>: There can be any number of these, separated by spaces. The rules define what the ant does when it gets onto a specific square color,
+            is in a particular state, etc.
+            They are formatted like this: <code>{thisState:cellState => actions}</code> (with the space around the => optional).</p>
+        <p><code>thisState</code> is the <em>internal</em> state that the ant is in,
+            and <code>cellState</code> is the <em>external</em> state of the cell the ant is sitting on. Both must be numbers.</p>
+        <p>If there is no rule for an antState:cellState pair, the ant will halt and do nothing until another ant comes and changes the cell. (Multiple ants can occupy
+            the same cell, and must if an ant is to be re-started in this manner, but if two "active" ants run into each other, the behavior is not defined.)</p>
+        <p>The actions are a comma-or-space-separated list of individual commands the ant takes. The string is first split by commas, and each comma-separated section
+            is queued. The ant only looks up in the rules table when the queue is empty, and executes only one comma-separated section at a time, so commas means that
+            the ant will not always look at the cell it is on every tick.</p>
+        <p>Afterwards, it is split by spaces, and each sub-command between commas runs all at once, in one tick.</p>
+        <p>Each sub-command is simply a string of letters, optionally followed by an argument enclosed in parenthesis.</p>
+        <p>As an example, here is classic Langton's Ant:</p>
+        <pre>[Ant langton
+  {1:0 => put(1) rt fd}
+  {1:1 => put(0) lt fd}
+]</pre>
+        <p>Scroll to the bottom for the list of supported commands and species of ants.</p>
+
+        <h2>RLE World Data</h2>
+        <p>This is almost like Golly's RLE format, but it has some differeces. First, there is no <code>x = N, y = N, rule = N</code> header line.</p>
+        <p>Second, after a run of non-"$" cells, there can be an ant.</p>
+        <p>An ant looks like <code>[breed:dir:state]</code> where <code>breed</code> is a breed from the ant breeds section, <code>dir</code> is 0, 1, 2, or 3
+            corresponding to N, E, S, or W, and <code>state</code> (which is optional) is the initial state the ant is in. It deaults to 1 if both the state and colon
+            are left out. If the colon is not left out that means the intial state is the empty string.</p>
+        <p>Otherwise this is just the same as Golly RLE format:</p>
+        <blockquote>For rules with more than two states, a "." represents a zero state; states 1..24 are represented by "A".."X", states 25..48 by "pA".."pX",
+            states 49..72 by "qA".."qX", and on up to states 241..255 represented by "yA".."yO".</blockquote>
+
+        <h1>Supported Ant Species and Commands</h1>
+        <h2><code>Ant</code> (base class for all)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>What it does</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>fd(num)</code>, <code>bk(num)</code></td>
+                    <td>Moves forward or that many cells. Defaults to 1 if argument is omitted.</td>
+                </tr>
+                <tr>
+                    <td><code>rt(num)</code>, <code>lt(num)</code></td>
+                    <td>Turn right or left that many steps (step = 90 degrees). Defaults to 1 if argument is omitted.</td>
+                </tr>
+                <tr>
+                    <td><code>put(state)</code></td>
+                    <td>Set the cell the ant is sitting on to <code>state</code> (which must be a number).</td>
+                </tr>
+                <tr>
+                    <td><code>state(num)</code></td>
+                    <td>Sets the ant's internal state to <code>num</code>.</td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
