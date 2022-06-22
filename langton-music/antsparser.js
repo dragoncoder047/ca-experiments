@@ -42,13 +42,13 @@ function loadWorld(text, antSpecies, world, breeder) {
     console.log('rest of text: ', text);
     while (true) {
         text = text.trim();
-        match = /^(\d*)([p-y]?[A-X]|[$.])(?:\[(.+?):([0-3])(?::(\d+))?\])?/.exec(text);
+        match = /^(\d*)([p-y]?[A-X]|[$.])(\[(.+?)\])*/.exec(text);
         if (!match) break;
         text = text.slice(match[0].length);
         console.log('RLE ', match[0]);
-        var count = parseInt(match[1] || 1), cellState = match[2], antBreed = match[3], antDir = parseInt(match[4]), antState = parseInt(match[5] ?? 1);
-        console.log(antBreed, antDir);
-        if (antBreed && cellState === '$') throw "RLE error: Can't put ant after $";
+        var count = parseInt(match[1] || 1), cellState = match[2], antsString = match[3];
+        console.log(antsString);
+        if (antsString && cellState === '$') throw "RLE error: Can't put ants after $";
         if (cellState === '$') {
             x = 0;
             y += count;
@@ -56,7 +56,19 @@ function loadWorld(text, antSpecies, world, breeder) {
             cellState = lettersToStateNum(cellState);
             console.log('lettersToStateNum() returned', cellState);
             for (i = 0; i < count; i++, x++) world.setCell(x, y, cellState);
-            if (antBreed && antDir) ants.push(breeder.createAnt(antBreed, world, x - 1, y, antDir, antState, ants));
+        }
+        if (antsString) {
+            while(true) {
+                match = /\[(.+?):(\d+)(?::(\d+))?\]/.exec(antsString);
+                if (!match) break;
+                antsString = antsString.slice(match[0].length);
+                var antBreed = match[1], antDir = match[2], antState = match[3];
+                if (/^[0-3]$/.test(antDir)) antDir = parseInt(antDir);
+                else throw `RLE error: Bad ant direction ${antDir}`;
+                if (/^\d+$/.test(antState)) antState = parseInt(antState);
+                else throw `RLE error: Bad ant state ${antState}`;
+                ants.push(breeder.createAnt(antBreed, world, x - 1, y, antDir, antState, ants));
+            }
         }
     }
     return { ants, header };

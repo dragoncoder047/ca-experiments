@@ -19,7 +19,7 @@
             <li>A bunch of ant "breeds"</li>
             <li>Some RLE data to specify the cells on the grid and the placement of the ants</li>
         </ul>
-        <p>Addidtionally you can put sigle line comments anywhere in the text by preceding the coment with <code>%%</code></p>
+        <p>Addidtionally, you can put sigle line comments anywhere in the text by preceding the coment with <code>%%</code>.</p>
 
         <h2>Header</h2>
         <p>This is pretty simple. They syntax is simply <code>key: value;</code> repeated as many times as necessary, with
@@ -62,7 +62,7 @@
 
         <h2>RLE World Data</h2>
         <p>This is almost like Golly's RLE format, but it has some differeces. First, there is no <code>x = N, y = N, rule = N</code> header line.</p>
-        <p>Second, after a run of non-"$" cells, there can be an ant.</p>
+        <p>Second, after a run of non-"$" cells, there can be one or more ants.</p>
         <p>An ant looks like <code>[breed:dir:state]</code> where <code>breed</code> is a breed from the ant breeds section, <code>dir</code> is 0, 1, 2, or 3
             corresponding to N, E, S, or W, and <code>state</code> (which is optional) is the initial state the ant is in. It deaults to 1 if both the state and colon
             are left out. If the colon is not left out that is an error.</p>
@@ -121,7 +121,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><code>play(note)</code>></td>
+                    <td><code>play(note)</code></td>
                     <td>Play that note for 1 tick. <code>note</code> can be a number, which is a frequency in hertz, or a note name
                         string such as <code>Bb5</code> which is converted to the frequency of theat piano note.</td>
                 </tr>
