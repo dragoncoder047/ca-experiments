@@ -7,7 +7,7 @@ class Beetle extends Ant {
     do_play(arg) {
         var [_, note, pan] = /([^:]+)(?::([-+\d.]+))?/.exec(arg);
         if (!pan) pan = 0;
-        this.panner.pan = pan;
+        this.panner.pan.setValueAtTime(pan, Tone.now());
         this.drum.triggerAttackRelease(note, "0.4n");
     }
 }
@@ -21,7 +21,7 @@ class Cricket extends Ant {
     do_play(arg) {
         var [_, note, pan] = /([^:]+)(?::([-+\d.]+))?/.exec(arg);
         if (!pan) pan = 0;
-        this.panner.pan = pan;
+        this.panner.pan.setValueAtTime(pan, Tone.now());
         this.synth.triggerAttackRelease(note, "0.4n");
     }
 }
