@@ -30,7 +30,7 @@ class Breeder {
     }
     dumpBreeds() {
         var out = '';
-        for (var breed in Object.getOwnPropertyNames(this.breeds)) {
+        for (var breed of Object.getOwnPropertyNames(this.breeds)) {
             out += `[${this.breeds[breed][0].constructor.name} ${breed}\n${this.breeds[breed][1].map(c => [c[0], c[1].map(sc => sc.map(cd => cd[1] ? `${cd[0]}(${cd[1]})` : cd[0]).join(' ')).join(',\n    ')]).map(c => `  {${c[0]} =>\n    ${c[1]}\n  }`).join('\n')}\n]\n`;
         }
         return out.trim();
