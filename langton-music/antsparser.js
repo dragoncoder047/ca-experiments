@@ -2,10 +2,11 @@ function loadWorld(text, antSpecies, world, breeder) {
     text = text.replaceAll(/%%.*?$/gm, '');
     var header = {};
     while (true) {
-        match = /^([a-z]+?)\s*:\s*(.+?)(?:;|(?=\n\[))/is.exec(text.trim()); //jshint ignore:line
+        text = text.trim();
+        match = /^([a-z]+?)\s*:\s*(.+?)(?:;|(?=\[))/ims.exec(text); //jshint ignore:line
         if (!match) break;
         text = text.slice(match[0].length);
-        var key = match[1], value = match[2];
+        var key = match[1].trim(), value = match[2].trim();
         console.log('header entry: ', key, value);
         header[key] = value;
     }
@@ -14,7 +15,7 @@ function loadWorld(text, antSpecies, world, breeder) {
     var match, i;
     while (true) {
         text = text.trim();
-        match = /^\[([a-z]+)\s+([a-z]+)\s+(.+?)\]/is.exec(text); //jshint ignore:line
+        match = /^\[([a-z]+)\s+([a-z]+)\s+(.+?)\]/ims.exec(text); //jshint ignore:line
         if (!match) break;
         text = text.slice(match[0].length);
         var species = match[1], breed = match[2], commands = match[3];
@@ -85,7 +86,7 @@ function stateNumToLetters(state) {
     var out = '';
     if (state > 24) {
         var hi = (state - 25) / 24;
-        out += 'pqrstuvwx'[hi];
+        out += 'pqrstuvwxy'[hi];
         state -= (hi + 1) * 24;
     }
     return 'ABCDEFGHIJKLMNOPQRSTUVWX'[state - 1] + out;
