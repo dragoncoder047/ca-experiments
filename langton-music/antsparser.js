@@ -24,7 +24,7 @@ function loadWorld(text, antSpecies, world, breeder) {
         var commandsParsed = {};
         while (true) {
             commands = commands.trim();
-            match = /^\{(\S+)\s*=>\s*(.+?)\}/s.exec(commands); //jshint ignore:line
+            match = /^\{(\S+)\s*=>\s*(.+?)\}/sm.exec(commands); //jshint ignore:line
             if (!match) break;
             commands = commands.slice(match[0].length);
             var statedesc = match[1], actions = match[2];

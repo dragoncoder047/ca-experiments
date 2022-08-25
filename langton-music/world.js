@@ -38,7 +38,7 @@ class World {
         var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, got = false;
         for (var cell of Object.getOwnPropertyNames(this.cells)) {
             var [x, y] = cell.split(',');
-            x = parseInt(x); y = parseInt(y);
+            x = parseInt(x, 16); y = parseInt(y, 16);
             minX = Math.min(minX, x); maxX = Math.max(maxX, x);
             minY = Math.min(minY, y); maxY = Math.max(maxY, y);
             got = true;
