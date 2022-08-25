@@ -161,7 +161,7 @@ fit();
 function dump() {
     try {
         stop();
-        var h = Object.getOwnPropertyNames(header).map(n => `n: ${header[n]}\n`);
+        var h = Object.getOwnPropertyNames(header).map(n => `${n}: ${header[n]}`).join('\n');
         var b = breeder.dumpBreeds();
         var r = world.dump(ants);
         textbox.value = `${h}\n${b}\n${r}`;
