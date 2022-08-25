@@ -49,6 +49,7 @@ class World {
             got = true;
         }
         if (!got) return { tl: [0, 0], br: [0, 0] };
+        console.log({ tl: [minX, minY], br: [maxX, maxY] });
         return { tl: [minX, minY], br: [maxX, maxY] };
     }
 
@@ -57,13 +58,13 @@ class World {
         var line = '', out = '';
         var x = minX, y = minY;
         var state, count = 0;
-        while (y < maxY) {
-            while (x < maxX) {
+        while (y <= maxY) {
+            while (x <= maxX) {
                 var cState = this.getCell(x, y);
                 if (cState != state) {
                     line += `${count > 1 ? count : ''}${stateNumToLetters(state)}`;
                     count = 0;
-                    state = undefined;
+                    state = cState;
                 } else {
                     count++;
                 }
@@ -88,6 +89,6 @@ class World {
             line += '$';
             y++;
         }
-        return out;
+        return out + line;
     }
 }
