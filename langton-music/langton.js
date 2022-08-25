@@ -6,6 +6,7 @@ const stepBtn = $('#step');
 const stepCounter = $('#stepnum');
 const textbox = $('#textbox');
 const loadBtn = $('#loadbtn');
+const dumpBtn = $('#dumpbtn');
 const statusBar = $('#statusbar');
 const fitBtn = $('#fit');
 const autoFit = $('#autofit');
@@ -156,3 +157,12 @@ function fit() {
 }
 fitBtn.addEventListener('click', fit);
 fit();
+
+function dump() {
+    stop();
+    var h = Object.getOwnPropertyNames(header).map(n => `n: ${header[n]}\n`);
+    var b = breeder.dumpBreeds();
+    var r = world.dump(ants);
+    textbox.value = `${h}\n${b}\n${r}`;
+}
+dumpBtn.addEventListener('click', dump);

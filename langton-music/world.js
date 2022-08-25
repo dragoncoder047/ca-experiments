@@ -8,7 +8,7 @@ class World {
     draw() {
         for (var cell in this.cells) {
             var [x, y] = cell.split(',');
-            this.drawCell(parseInt(x), parseInt(y), this.getColor(this.cells[cell]));
+            this.drawCell(parseInt(x, 16), parseInt(y, 16), this.getColor(this.cells[cell]));
         }
     }
     drawCell(x, y, color) {
@@ -24,10 +24,10 @@ class World {
         return this.stateColors[state];
     }
     getCell(x, y) {
-        return this.cells[`${x},${y}`] ?? 0;
+        return this.cells[`${x.toString(16)},${y.toString(16)}`] ?? 0;
     }
     setCell(x, y, state) {
-        var coords = `${x},${y}`;
+        var coords = `${x.toString(16)},${y.toString(16)}`;
         if (state === 0) delete this.cells[coords];
         else this.cells[coords] = state;
     }
@@ -50,5 +50,44 @@ class World {
         }
         if (!got) return { tl: [0, 0], br: [0, 0] };
         return { tl: [minX, minY], br: [maxX, maxY] };
+    }
+
+    dump(ants) {
+        var { tl: [minX, minY], br: [maxX, maxY] } = this.bbox(ants);
+        var line = '', out = '';
+        var x = minX, y = minY;
+        var state, count = 0;
+        while (y < maxY) {
+            while (x < maxX) {
+                var cState = this.getCell(x, y);
+                if (cState != state) {
+                    line += `${count > 1 ? count : ''}${stateNumToLetters(state)}`;
+                    count = 0;
+                    state = undefined;
+                } else {
+                    count++;
+                }
+                for (var a of ants.filter(a => a.x == x && a.y == y)) {
+                    line += `${count > 1 ? count : ''}${stateNumToLetters(state)}`;
+                    count = 0;
+                    state = undefined;
+                    line += `[${a.breed}:${a.dir}:${a.state}]`;
+                }
+                if (line.length > 70) {
+                    out += line;
+                    line = '';
+                }
+                x++;
+            }
+            x = minX;
+            if (state != 0 && count > 0) {
+                line += `${count > 1 ? count : ''}${stateNumToLetters(state)}`;
+                count = 0;
+                state = undefined;
+            }
+            line += '$';
+            y++;
+        }
+        return out;
     }
 }

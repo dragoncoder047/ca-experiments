@@ -9,11 +9,12 @@
     </head>
     <body>
         <h1>Langton's Ant Music</h1>
-        <p><button id="loadbtn">Load</button> <button id="startstop">Start</button> <button id="step">Step</button> <output id="statusbar"></output></p>
+        <p><button id="startstop">Start</button> <button id="step">Step</button> <output id="statusbar"></output></p>
         <p>Step: <output id="stepnum"></output></p>
         <p><button id="fit">Fit to Window</button><label for="autofit"><input type="checkbox" checked name="autofit" id="autofit">Autofit</label></p>
         <canvas id="playfield"></canvas>
         <p>Input text</p>
+        <p><button id="loadbtn">Load</button><button id="dumpbtn">Dump</button> <span style="opacity: 50%">&larr;CAUTION: this will WIPE OUT your comments!</span></p>
         <textarea id="textbox" style="width: 90%" rows="20" spellcheck="false">bpm: 120
 [Beetle langton
   {1:0 => put(1) rt fd play(C2)}

@@ -58,7 +58,7 @@ function loadWorld(text, antSpecies, world, breeder) {
             for (i = 0; i < count; i++, x++) world.setCell(x, y, cellState);
         }
         if (antsString) {
-            while(true) {
+            while (true) {
                 match = /\[(.+?):(\d+)(?::(\d+))?\]/.exec(antsString);
                 if (!match) break;
                 antsString = antsString.slice(match[0].length);
@@ -75,8 +75,18 @@ function loadWorld(text, antSpecies, world, breeder) {
 }
 
 function lettersToStateNum(letters) {
-    const AA = '.ABCDEFGHIJKLMNOPQRSTUVWX';
-    const pq = '~pqrstuvwxy';
-    if (letters.length === 1) return AA.indexOf(letters);
-    else return 24 * pq.indexOf(letters[0]) + AA.indexOf(letters[1]);
+    if (letters.length == 1) return '.ABCDEFGHIJKLMNOPQRSTUVWX'.indexOf(letters);
+    return lettersToStateNum(letters.slice(1)) + (24 * ('pqrstuvwx'.indexOf(letters[0]) + 1));
+}
+
+function stateNumToLetters(state) {
+    if (state === undefined) return '';
+    if (state == 0) return '.';
+    var out = '';
+    if (state > 24) {
+        var hi = (state - 25) / 24;
+        out += 'pqrstuvwx'[hi];
+        state -= (hi + 1) * 24;
+    }
+    return 'ABCDEFGHIJKLMNOPQRSTUVWX'[state - 1] + out;
 }
