@@ -159,10 +159,15 @@ fitBtn.addEventListener('click', fit);
 fit();
 
 function dump() {
-    stop();
-    var h = Object.getOwnPropertyNames(header).map(n => `n: ${header[n]}\n`);
-    var b = breeder.dumpBreeds();
-    var r = world.dump(ants);
-    textbox.value = `${h}\n${b}\n${r}`;
+    try {
+        stop();
+        var h = Object.getOwnPropertyNames(header).map(n => `n: ${header[n]}\n`);
+        var b = breeder.dumpBreeds();
+        var r = world.dump(ants);
+        textbox.value = `${h}\n${b}\n${r}`;
+    } catch (e) {
+        showStatus(e, 'red');
+        throw e;
+    }
 }
 dumpBtn.addEventListener('click', dump);
