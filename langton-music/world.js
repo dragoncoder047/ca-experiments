@@ -73,10 +73,10 @@ class World {
                     count = 0;
                     state = undefined;
                     line += `[${a.breed}:${a.dir}:${a.state}]`;
-                }
-                if (line.length > 70) {
-                    out += line;
-                    line = '';
+                    if (line.length > 70) {
+                        out += line;
+                        line = '';
+                    }
                 }
                 x++;
             }
