@@ -14,9 +14,8 @@ const autoFit = $('#autofit');
 var dragController = new CanvasMove(playfield, false);
 var ctx = dragController.ctx;
 var world = new World(ctx);
-var header = {};
+var header = { stepCount: 0 };
 var ants = [];
-var stepNum = 0;
 var breeder = new Breeder();
 
 var ratio = (function () {
@@ -53,7 +52,7 @@ function render() {
     world.draw();
     ants.forEach(ant => ant.draw());
     dragController.exit();
-    stepCounter.textContent = stepNum;
+    stepCounter.textContent = header.stepCount;
     setTimeout(render, 50); // 20 fps
 }
 render();
@@ -91,7 +90,7 @@ stepBtn.addEventListener('click', step);
 function tick() {
     try {
         ants.forEach(ant => ant.tick());
-        stepNum++;
+        header.stepCount++;
     } catch (e) {
         stop();
         runEnable(false);
@@ -115,11 +114,12 @@ function tick() {
 
 function load() {
     stop();
-    stepNum = 0;
+    header.stepCount = 0;
     showStatus('Loading...');
     try {
         ({ ants, header } = loadWorld(textbox.value, { Ant, Beetle, Cricket }, world, breeder));
-        Tone.Transport.bpm.rampTo(2 * (parseInt(header.bpm) || 240), 0.001);
+        header.stepCount = header.stepCount ?? 0;
+        Tone.Transport.bpm.setValueAtTime(2 * (parseInt(header.bpm) || 240), Tone.now());
         Tone.Transport.start();
     } catch (e) {
         stop();
