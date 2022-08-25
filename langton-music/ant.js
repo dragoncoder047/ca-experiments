@@ -29,7 +29,7 @@ class Breeder {
         this.breeds[breedName] = [klass, fixedCommands];
     }
     dumpBreeds() {
-        return Object.getOwnPropertyNames(this.breeds).map(breed => `[${this.breeds[breed][0].constructor.name} ${breed}\n${Object.getOwnPropertyNames(this.breeds[breed][1]).map(p => [p, this.breeds[breed][1][p].map(sc => sc.map(cd => cd[1] ? `${cd[0]}(${cd[1]})` : cd[0]).join(' ')).join(',\n    ')]).map(c => `  {${c[0]} =>\n    ${c[1]}\n  }`).join('\n')}\n]`).join('\n');
+        return Object.getOwnPropertyNames(this.breeds).map(breed => `[${this.breeds[breed][0].name} ${breed}\n${Object.getOwnPropertyNames(this.breeds[breed][1]).map(p => [p, this.breeds[breed][1][p].map(sc => sc.map(cd => cd[1] ? `${cd[0]}(${cd[1]})` : cd[0]).join(' ')).join(',\n    ')]).map(c => `  {${c[0]} =>\n    ${c[1]}\n  }`).join('\n')}\n]`).join('\n');
     }
     createAnt(breed, world, x, y, dir, state, antsList) {
         if (!(breed in this.breeds)) throw `Unknown ant breed ${breed}`;
