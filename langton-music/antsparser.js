@@ -2,7 +2,7 @@ function loadWorld(text, antSpecies, world, breeder) {
     text = text.replaceAll(/%%.*?$/gm, '');
     var header = {};
     while (true) {
-        match = /^([a-z]+?)\s*:\s*(.+?)(?:;|(?=\[))/is.exec(text.trim()); //jshint ignore:line
+        match = /^([a-z]+?)\s*:\s*([^\];]+?)(?:;|(?=\[))/is.exec(text.trim()); //jshint ignore:line
         if (!match) break;
         text = text.slice(match[0].length);
         var key = match[1], value = match[2];
