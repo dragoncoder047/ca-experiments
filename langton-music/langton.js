@@ -145,7 +145,7 @@ function fit() {
     var bbox = world.bbox(ants);
     var middle = [(bbox.tl[0] + bbox.br[0]) / 2, (bbox.tl[1] + bbox.br[1]) / 2];
     var dimensions = [bbox.br[0] - bbox.tl[0] + 1, bbox.br[1] - bbox.tl[1] + 1]; // +1 to preclude dividing by zero
-    var leftRightZoom = playfield.height / dimensions[0] / world.cellSize;
+    var leftRightZoom = playfield.width / dimensions[0] / world.cellSize;
     var upDownZoom = playfield.height / dimensions[1] / world.cellSize;
     dragController.zoom = Math.min(upDownZoom, leftRightZoom);
     dragController.x = -middle[0] * world.cellSize * dragController.zoom + playfield.width / 2;
