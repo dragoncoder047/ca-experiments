@@ -62,7 +62,7 @@ class World {
             while (x <= maxX) {
                 var cState = this.getCell(x, y);
                 if (cState != state) {
-                    line += `${count > 1 ? count : ''}${stateNumToLetters(state)}`;
+                    if (state !== undefined) line += `${count > 1 ? count : ''}${stateNumToLetters(state)}`;
                     count = 0;
                     state = cState;
                 } else {
@@ -82,7 +82,7 @@ class World {
             }
             x = minX;
             if (state != 0 && count > 0) {
-                line += `${count > 1 ? count : ''}${stateNumToLetters(state)}`;
+                if (state !== undefined) line += `${count > 1 ? count : ''}${stateNumToLetters(state)}`;
                 count = 0;
                 state = undefined;
             }
