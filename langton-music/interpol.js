@@ -1,4 +1,4 @@
-function processExpression(expr) {
+function processExpressions(expr) {
     // find expressions
     while (true) {
         expr = expr.trim();
