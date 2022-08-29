@@ -79,7 +79,7 @@ function evalExpression(expr) {
                     break;
                 case '@':
                     var c = s.pop();
-                    s.push(a ? b : c);
+                    s.push(b ? a : c);
                     break;
                 default:
                     throw `unknown expression command starting at ${token}${expr}`;

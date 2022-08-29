@@ -1,5 +1,7 @@
 # Langton-Music Format
 
+## Overview
+
 The format is based on 3 sections:
 
 * A header, of key-value pairs
@@ -20,6 +22,7 @@ There is one rule: `key` must be all letters (no numbers, symbols, or whitespace
 |:------:|:---------|
 | `bpm` | COntrold maximum beats per minute of playback. |
 | `stepCount` | Doesn't really do anything, it just changes the initial step number from the default zero when you press <small>LOAD</small>. Useful for restoring from a dump. |
+| `#blah` | An arbitrary interpolation value (see below). |
 
 ## Ant Breeds
 
@@ -49,7 +52,7 @@ Afterwards, it is split by spaces, and each sub-command between commas runs all 
 
 As an example, here is classic Langton's Ant:
 
-```
+```txt
 [Ant langton
   {1:0 => put(1) rt fd}
   {1:1 => put(0) lt fd}
@@ -68,9 +71,50 @@ Otherwise this is just the same as Golly RLE format:
 
 > For rules with more than two states, a "." represents a zero state; states 1..24 are represented by "A".."X", states 25..48 by "pA".."pX", states 49..72 by "qA".."qX", and on up to states 241..255 represented by "yA".."yO".
 
-# Supported Ant Species and Commands
+## Interpolations
 
-## `Ant` (base class for all)
+Inside each sub-command, the parameter can also include interpolations.
+
+There are two types of interpolations: fixed and expressions.
+
+**Fixed interpolations** look like `#xxx`, where `xxx` is a name. Some names are provided by the ant, which take precedence; the rest are put in the header.
+
+| Fixed Interpolation Name | Value |
+|:------------------------:|:------|
+| `dir` | 0, 1, 2, or 3 depending on the ant's direction. |
+| `state` | Whatever state the ant is in. |
+| `blah` | Whatever value `#blah` is set to in the header. (`blah` can be anything.) |
+
+**Expression interpolations** are similar: They look like `#xxx;` - the only difference is a semicolon at the end and the `xxx`'s are an expression. Expressions are processed after fixed interpolations; so the former can include the latter.
+
+The expression language is a crude stack-based (postfix) language that is somewhat like Befunge; it's not Turing-complete, but it should suffice. The "returned value" is the top of the stack after the expression is executed.
+
+| Command/Token | Function |
+|:-------------:|:---------|
+| `0-9` number | Pushes the arbitrary number to the stack; only integers are supported. |
+| `` `string` `` | Pushes the arbitrary string between the backticks. |
+| `,` | No-op. Useful for separating numbers (the parser is greedy so it needs a non-digit character to stop it). |
+| `\` | Swap top two items on the stack. |
+| `$` | Drops the top item. |
+| `:` | Duplicates the top item. |
+| `?` | Pushes a random integer from 0 to the top number minus 1. |
+| `%` | Pushes second number mod top number. |
+| `*` | Pushes second number times top number. |
+| `/` | Pushes second number divided by top number. |
+| `+` | Pushes second number plus top number. |
+| `-` | Pushes second number minus top number. |
+| `~` | Pushes negation of top number. Shortcut for `,0-`. |
+| `|` | Pushes second number bitwise or top number. |
+| `&` | Pushes second number bitwise and top number. |
+| `^` | Pushes second number bitwise xor top number. |
+| `<` | Pushes true or false depending on if second number is less than the top number. |
+| `>` | Pushes true or false depending on if second number is greater than the top number. |
+| `=` | Pushes true or false depending on if second number is equal to the top number. |
+| `@` | Pushes the third number if the first is true, otherwise the second. |
+
+## Supported Ant Species and Commands
+
+### `Ant` (base class for all)
 
 | Command | What it does |
 |:-------:|:-------------|
@@ -82,7 +126,7 @@ Otherwise this is just the same as Golly RLE format:
 | `spawn(breed:dir:state)` | Spawn an ant of breed `breed` here, in state `state` and facing in `dir`. `dir` is relative, meaning 0 = same way as me, 1 = right turn from me, etc. |
 | `die` | Mark this ant as dead, so it will be removed. |
 
-## `Beetle` and `Cricket`
+### `Beetle` and `Cricket`
 
 | Command | What it does |
 |:-------:|:-------------|
