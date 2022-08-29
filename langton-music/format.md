@@ -133,5 +133,3 @@ The expression language is a crude stack-based (postfix) language that is somewh
 | `play(note:pan)` | Play that note for 1 tick. `note` can be a number, which is a frequency in hertz, or a note name string such as `Bb5` which is converted to the frequency of that piano note. Support for stereo pan is experimental - defaults to 0. |
 
 `Beetle` (think: "beat") uses a [`Tone.MembraneSynth`](https://tonejs.github.io/docs/14.7.77/MembraneSynth), whereas `Cricket` uses a [`Tone.AMSynth`](https://tonejs.github.io/docs/14.7.77/AMSynth).
-
-<script>window.markdeepOptions={tocStyle:'none'};</script><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" type="text/javascript" charset="utf8"></script><script>if(!window.alreadyProcessedMarkdeep)document.body.style.visibility="visible";</script>
