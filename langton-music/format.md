@@ -104,7 +104,7 @@ The expression language is a crude stack-based (postfix) language that is somewh
 | `+` | Pushes second number plus top number. |
 | `-` | Pushes second number minus top number. |
 | `~` | Pushes negation of top number. Shortcut for `,0-`. |
-| `|` | Pushes second number bitwise or top number. |
+| `\|` | Pushes second number bitwise or top number. |
 | `&` | Pushes second number bitwise and top number. |
 | `^` | Pushes second number bitwise xor top number. |
 | `<` | Pushes true or false depending on if second number is less than the top number. |
