@@ -86,7 +86,7 @@ Otherwise this is just the same as Golly RLE format:
 
 | Command | What it does |
 |:-------:|:-------------|
-| `play(note)` | Play that note for 1 tick. `note` can be a number, which is a frequency in hertz, or a note name string such as `Bb5` which is converted to the frequency of that piano note. |
+| `play(note:pan)` | Play that note for 1 tick. `note` can be a number, which is a frequency in hertz, or a note name string such as `Bb5` which is converted to the frequency of that piano note. Support for stereo pan is experimental - defaults to 0. |
 
 `Beetle` (think: "beat") uses a [`Tone.MembraneSynth`](https://tonejs.github.io/docs/14.7.77/MembraneSynth), whereas `Cricket` uses a [`Tone.AMSynth`](https://tonejs.github.io/docs/14.7.77/AMSynth).
 
