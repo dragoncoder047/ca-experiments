@@ -44,10 +44,12 @@ Afterwards, it is split by spaces, and each sub-command between commas runs all 
 
 As an example, here is classic Langton's Ant:
 
-    [Ant langton
-    {1:0 => put(1) rt fd}
-    {1:1 => put(0) lt fd}
-    ]
+```
+[Ant langton
+  {1:0 => put(1) rt fd}
+  {1:1 => put(0) lt fd}
+]
+```
 
 Scroll to the bottom for the list of supported commands and species of ants.
 
@@ -83,4 +85,4 @@ Otherwise this is just the same as Golly RLE format:
 
 `Beetle` (think: "beat") uses a [`Tone.MembraneSynth`](https://tonejs.github.io/docs/14.7.77/MembraneSynth), whereas `Cricket` uses a [`Tone.AMSynth`](https://tonejs.github.io/docs/14.7.77/AMSynth).
 
-<script>window.markdeepOptions={tocStyle:'none'};</script><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="https://raw.githubusercontent.com/reelsense/markdeep/master/markdeep.js"></script><script>if(!window.alreadyProcessedMarkdeep)document.body.style.visibility="visible";</script>
+<script>window.markdeepOptions={tocStyle:'none'};</script><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="https://raw.githubusercontent.com/reelsense/markdeep/master/markdeep.js" type="text/javascript" charset="utf8"></script><script>if(!window.alreadyProcessedMarkdeep)document.body.style.visibility="visible";</script>
