@@ -59,13 +59,15 @@ class Ant {
     processInserts(arg) {
         // Do simple inserts
         var vars = ['dir', 'state'];
-        for (var v of vars) {
-            arg = arg.replaceAll('#' + v, this[v]);
-        }
-        // do global interpolations
-        if (window.interpolations) {
-            for (var [f, b] of interpolations) {
-                arg = arg.replaceAll('#' + f, b);
+        while (arg.indexOf('#') != -1) {
+            for (var v of vars) {
+                arg = arg.replaceAll('#' + v, this[v]);
+            }
+            // do global interpolations
+            if (window.interpolations) {
+                for (var [f, b] of interpolations) {
+                    arg = arg.replaceAll('#' + f, b);
+                }
             }
         }
         // Do expressions
@@ -123,7 +125,7 @@ class Ant {
         this.ctx.restore();
     }
     numarg(arg, methodname, default_ = 1) {
-        arg = arg ?? default_;
+        arg = arg || default_;
         var argNum = parseInt(arg);
         if (isNaN(argNum)) throw `${methodname}(): ${arg} is not a number`;
         return argNum;
