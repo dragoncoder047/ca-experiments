@@ -16,6 +16,7 @@ var dragController = new CanvasMove(playfield, false);
 var ctx = dragController.ctx;
 var world = new World(ctx);
 var header = { stepCount: 0 };
+var interpolations = [];
 var ants = [];
 var breeder = new Breeder();
 
@@ -129,6 +130,10 @@ function load() {
     showStatus('Loading...');
     try {
         ({ ants, header } = loadWorld(textbox.value, { Ant, Beetle, Cricket }, world, breeder));
+        interpolations = [];
+        for (var prop of Object.getOwnPropertyNames(header)) {
+            if (prop.startsWith('#')) interpolations.push([prop.slice(1), header[prop]]);
+        }
         header.stepCount = header.stepCount ?? 0;
         Tone.Transport.bpm.setValueAtTime(2 * (parseInt(header.bpm) || 240), Tone.now());
         Tone.Transport.start();

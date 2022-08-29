@@ -56,12 +56,27 @@ class Ant {
         this.halted = false;
         this.dead = false;
     }
+    processInserts(arg) {
+        // Do simple inserts
+        var vars = ['dir', 'state'];
+        for (var v of vars) {
+            arg = arg.replaceAll('#' + v, this[v]);
+        }
+        // do global interpolations
+        if (window.interpolations) {
+            for (var [f, b] of interpolations) {
+                arg = arg.replaceAll('#' + f, b);
+            }
+        }
+        // Do expressions
+        return processExpressions(arg);
+    }
     tick() {
         this.ensureQueueNotEmpty();
         var commands = this.queue.shift();
         for (var [name, arg] of commands) {
             this.halted = false;
-            this[`do_${name}`](arg);
+            this[`do_${name}`](this.processInserts(arg));
         }
     }
     ensureQueueNotEmpty() {
@@ -107,8 +122,8 @@ class Ant {
         this.ctx.beginPath(); this.ctx.arc(-1, -4.5, 0.5, 0, 2 * Math.PI); this.ctx.fill();
         this.ctx.restore();
     }
-    numarg(arg, methodname) {
-        arg = arg ?? 1;
+    numarg(arg, methodname, default_ = 1) {
+        arg = arg ?? default_;
         var argNum = parseInt(arg);
         if (isNaN(argNum)) throw `${methodname}(): ${arg} is not a number`;
         return argNum;

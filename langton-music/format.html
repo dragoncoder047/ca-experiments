@@ -14,7 +14,12 @@ This is pretty simple. They syntax is simply `key: value;` repeated as many time
 
 There is one rule: `key` must be all letters (no numbers, symbols, or whitespace), whereas `value` can be anything that isn't a semicolon (which would trip up the parser).
 
-The only supported option right now is `bpm`, which should be pretty self-explanatory. It's a number.
+### Supported Header Options
+
+| Option | Function |
+|:------:|:---------|
+| `bpm` | COntrold maximum beats per minute of playback. |
+| `stepCount` | Doesn't really do anything, it just changes the initial step number from the default zero when you press <small>LOAD</small>. Useful for restoring from a dump. |
 
 ## Ant Breeds
 
