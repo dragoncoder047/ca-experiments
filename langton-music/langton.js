@@ -4,6 +4,7 @@ const playfield = $('#playfield');
 const startStopBtn = $('#startstop');
 const stepBtn = $('#step');
 const stepCounter = $('#stepnum');
+const antsCounter = $('#antscount');
 const textbox = $('#textbox');
 const loadBtn = $('#loadbtn');
 const dumpBtn = $('#dumpbtn');
@@ -54,6 +55,7 @@ function render() {
     ants.forEach(ant => ant.draw());
     dragController.exit();
     stepCounter.textContent = header.stepCount;
+    antsCounter.textContent = ants.length;
     setTimeout(render, 50); // 20 fps
 }
 render();
