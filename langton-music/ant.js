@@ -76,7 +76,7 @@ class Ant {
         var commands = this.queue.shift();
         for (var [name, arg] of commands) {
             this.halted = false;
-            this[`do_${name}`](this.processInserts(arg));
+            this[`do_${name}`](this.processInserts(arg || ''));
         }
     }
     ensureQueueNotEmpty() {
