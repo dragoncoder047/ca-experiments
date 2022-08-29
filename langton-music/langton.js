@@ -98,6 +98,11 @@ function tick() {
         showStatus(e, 'red');
         throw e;
     }
+    if (ants.length > 64) {
+        stop();
+        runEnable(false);
+        showStatus('Too many ants.', 'red');
+    }
     if (ants.every(ant => ant.halted)) {
         stop();
         runEnable(false);
