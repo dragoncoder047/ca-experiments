@@ -92,7 +92,7 @@ stepBtn.addEventListener('click', step);
 
 function tick() {
     try {
-        ants.forEach(ant => ant.tick());
+        ants.slice().forEach(ant => ant.tick());
         header.stepCount++;
     } catch (e) {
         stop();
