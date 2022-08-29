@@ -102,17 +102,20 @@ function tick() {
         stop();
         runEnable(false);
         showStatus('Too many ants.', 'red');
+        return;
     }
     if (ants.every(ant => ant.halted)) {
         stop();
         runEnable(false);
         showStatus('All ants are halted.', 'blue');
+        return;
     }
     ants.forEach(ant => { if (ant.dead) ants.splice(ants.indexOf(ant), 1); });
     if (!ants.length) {
         stop();
         runEnable(false);
         showStatus('All ants are dead.', 'blue');
+        return;
     }
     if (autoFit.checked && running) fit();
     if (running) setTimeout(tick, 60000 / (header.bpm ?? 240));
