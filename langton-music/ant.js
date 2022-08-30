@@ -57,13 +57,13 @@ class Ant {
         this.dead = false;
     }
     processInserts(arg) {
-        // Do simple inserts
         var vars = ['dir', 'state'];
         while (arg.indexOf('#') != -1) {
+            // Do simple inserts
             for (var v of vars) {
                 arg = arg.replaceAll(new RegExp('(?<!\\\\)#' + v, 'g'), this[v]);
             }
-            // do global interpolations
+            // Do global interpolations
             if (window.interpolations) {
                 for (var [f, b] of interpolations) {
                     arg = arg.replaceAll(new RegExp('(?<!\\\\)#' + f, 'g'), b);
