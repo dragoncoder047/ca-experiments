@@ -25,7 +25,7 @@ function evalExpression(expr) {
             var a = s.pop();
             var b = s.pop();
             switch (token) {
-                case ',':
+                case "'":
                     if (b) s.push(b);
                     s.push(a);
                     break;

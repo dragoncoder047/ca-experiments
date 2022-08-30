@@ -93,7 +93,7 @@ The expression language is a crude stack-based (postfix) language that is somewh
 |:-------------:|:---------|
 | `0-9` number | Pushes the arbitrary number to the stack; only integers are supported. |
 | `` `string` `` | Pushes the arbitrary string between the backticks. |
-| `,` | No-op. Useful for separating numbers (the parser is greedy so it needs a non-digit character to stop it). |
+| `'` | No-op. Useful for separating numbers (the parser is greedy so it needs a non-digit character to stop it). |
 | `\` | Swap top two items on the stack. |
 | `$` | Drops the top item. |
 | `:` | Duplicates the top item. |
