@@ -69,9 +69,10 @@ class Ant {
                     arg = arg.replaceAll(new RegExp('(?<!\\\\)#' + f, 'g'), b);
                 }
             }
+            // Do expressions
+            arg = processExpressions(arg);
         }
-        // Do expressions
-        return processExpressions(arg);
+        return arg;
     }
     tick() {
         this.ensureQueueNotEmpty();
