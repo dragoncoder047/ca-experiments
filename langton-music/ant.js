@@ -61,12 +61,12 @@ class Ant {
         while (arg.indexOf('#') != -1) {
             // Do simple inserts
             for (var v of vars) {
-                arg = arg.replaceAll(new RegExp('(?<!\\\\)#' + v, 'g'), this[v]);
+                arg = arg.replaceAll('#' + v, this[v]);
             }
             // Do global interpolations
             if (window.interpolations) {
                 for (var [f, b] of interpolations) {
-                    arg = arg.replaceAll(new RegExp('(?<!\\\\)#' + f, 'g'), b);
+                    arg = arg.replaceAll('#' + f, b);
                 }
             }
             // Do expressions

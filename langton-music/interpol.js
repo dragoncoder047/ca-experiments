@@ -2,7 +2,7 @@ function processExpressions(expr) {
     // find expressions
     while (true) {
         expr = expr.trim();
-        var match = /(?<!\\)#(.+?);/.exec(expr);
+        var match = /#(.+?);/.exec(expr);
         if (!match) break;
         expr = expr.replaceAll(match[0], evalExpression(match[1]));
     }
