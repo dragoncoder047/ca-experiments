@@ -21,7 +21,7 @@ There is one rule: `key` must be all letters (no numbers, symbols, or whitespace
 | Option | Function |
 |:------:|:---------|
 | `bpm` | COntrold maximum beats per minute of playback. |
-| `stepCount` | Doesn't really do anything, it just changes the initial step number from the default zero when you press <small>LOAD</small>. Useful for restoring from a dump. |
+| `stepCount` | Doesn't really do anything, it just changes the initial step number from the default zero when you press LOAD. Useful for restoring from a dump. |
 | `#blah` | An arbitrary interpolation value (see below). |
 
 ## Ant Breeds
@@ -125,6 +125,8 @@ The expression language is a crude stack-based (postfix) language that is somewh
 | `state(num)` | Sets the ant's internal state to `num`. Use of this command turns the ant into an **turmite**. |
 | `spawn(breed:dir:state)` | Spawn an ant of breed `breed` here, in state `state` and facing in `dir`. `dir` is relative, meaning 0 = same way as me, 1 = right turn from me, etc. |
 | `die` | Mark this ant as dead, so it will be removed. |
+| `alert(text)` | Shows the text to the user in an alert box. Useful for debugging. |
+| `status(text, color)` | Puts the text in the status bar. Color is optional, defaults to black. |
 
 ### `Beetle` and `Cricket`
 

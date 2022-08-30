@@ -36,7 +36,6 @@ ctx.imageSmoothingEnabled = false;
 function showStatus(text, color = 'black') {
     statusBar.value = text;
     statusBar.style.color = color;
-    statusBar.scrollIntoView();
 }
 
 function runEnable(canRun) {

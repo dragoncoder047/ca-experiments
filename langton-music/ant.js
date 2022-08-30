@@ -61,12 +61,12 @@ class Ant {
         var vars = ['dir', 'state'];
         while (arg.indexOf('#') != -1) {
             for (var v of vars) {
-                arg = arg.replaceAll('#' + v, this[v]);
+                arg = arg.replaceAll(new RegExp('(?<!\\\\)#' + v, 'g'), this[v]);
             }
             // do global interpolations
             if (window.interpolations) {
                 for (var [f, b] of interpolations) {
-                    arg = arg.replaceAll('#' + f, b);
+                    arg = arg.replaceAll(new RegExp('(?<!\\\\)#' + f, 'g'), b);
                 }
             }
         }
@@ -188,5 +188,13 @@ class Ant {
     do_die(arg) {
         if (arg) throw `die() takes no argument`;
         this.dead = true;
+    }
+    do_alert(arg) {
+        alert(arg);
+    }
+    do_status(arg) {
+        if (!window.showStatus) throw 'status(): not available';
+        var [s, color] = arg.split(',');
+        showStatus(s.trim(), color ? color.trim() : undefined);
     }
 }
