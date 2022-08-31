@@ -3,7 +3,7 @@
     <head>
         <title>Interpolator test</title>
         <style>
-            body { font-family: monospace }
+            body { font-family: monospace; tab-width: 8 }
             table, th, td { border: 1px solid black; border-collapse: collapse; padding: 10px }
         </style>
     </head>
@@ -60,18 +60,21 @@
             [
                 'nothing here',
                 '#should #not #change',
-                'error at foo #foobar;',
+                'expect an error #foobar;',
                 'no #123; change outside of expression',
                 'multiple #123; interspersed #456; interpolations',
-                'top item is: #123\'456\'789;',
-                'resultant string #`foobar`;',
-                'top string #`foobar``barbaz`;',
-                'noooooop #123\'\'\'\'\'\'\'\';',
-                'swap #123\'456\\;',
-                'modulo #123\'2%;',
+                'top item is 789: #123\'456\'789;',
+                'resultant string is foobar: #`foobar`;',
+                'top string is barbaz: #`foobar``barbaz`;',
+                'noooooop test: #123\'\'\'\'\'\'\'\';',
                 'random #123?;',
-                'ternary yes #`incorrect``correct`1@;',
-                'ternary no #`correct``incorrect`0@;',
+                'ternary true test:\t\t#`❌``✅`1@;',
+                'ternary false test:\t\t#`✅``❌`0@;',
+                'swap:\t\t#123\'456\\\t\t456=`❌`\\`✅`\\@;',
+                'modulo:\t\t#123\'2%\t\t1=`❌`\\`✅`\\@;',
+                'add:\t\t#123\'2+\t\t125=`❌`\\`✅`\\@;',
+                'add strings:\t\t#`foo``bar`+\t\t`foobar`=`❌`\\`✅`\\@;',
+                'subtract:\t\t#123\'2-\t\t121=`❌`\\`✅`\\@;',
             ].forEach(runTest);
         </script>
     </body>
