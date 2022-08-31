@@ -82,7 +82,7 @@ function evalExpression(expr) {
                     s.push(b ? a : c);
                     break;
                 default:
-                    throw `unknown expression command starting at ${token}${expr}`;
+                    throw `unknown expression command ${token} starting at ${token}${expr}`;
             }
         }
     }
