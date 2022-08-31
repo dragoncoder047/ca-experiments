@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Interpolator test</title>
+    </head>
+    <body>
+        <h1>Interpolator Test</h1>
+        <p><input id="input"></input> <button id="run">Test it</button></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Input</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody id="out"></tbody
+        </table>
+        <script src="interpol.js"></script>
+        <script>
+            const box = document.getElementById('input');
+            const btn = document.getElementById('run');
+            const out = document.getElementById('out');
+            function appendResult(input, output) {
+                var row = document.createElement('tr');
+                var inD = document.createElement('td');
+                var ouD = document.createElement('td');
+                inD.textContent = input;
+                ouD.textContent = output;
+                row.appendChild(inD);
+                row.appendChild(ouD);
+                out.appendChild(row);
+            }
+            function runTest(x) {
+                var input = x || box.value;
+                var output;
+                try {
+                    output = processExpressions(input);
+                } catch(e) {
+                    output = e.toString();
+                }
+                appendResult(input, output);
+            }
+            btn.addEventListener('click', () => runTest());
+        </script>
+    </body>
+</html>
