@@ -2,6 +2,10 @@
 <html>
     <head>
         <title>Interpolator test</title>
+        <style>
+            body { font-family: monospace }
+            table, th, td { border: 1px solid black; border-collapse: collapse }
+        </style>
     </head>
     <body>
         <h1>Interpolator Test</h1>
@@ -31,8 +35,14 @@
                 out.appendChild(row);
             }
             function runTest(x) {
-                var input = x || box.value;
-                var output;
+                var input, output;
+                if (x) {
+                    input = x;
+                }
+                else {
+                    input = box.value;
+                    box.value = '';
+                }
                 try {
                     output = processExpressions(input);
                 } catch(e) {
