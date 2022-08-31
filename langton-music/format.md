@@ -112,6 +112,8 @@ The expression language is a crude stack-based (postfix) language that is somewh
 | `=` | Pushes true or false depending on if second number is equal to the top number. |
 | `@` | Pushes the third number if the first is true, otherwise the second. |
 
+An (incomplete) test suite is available at https://dragoncoder047.github.io/ca-experiments/langton-music/interpoltest.html.
+
 ## Supported Ant Species and Commands
 
 ### `Ant` (base class for all)
