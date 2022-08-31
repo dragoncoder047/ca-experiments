@@ -21,14 +21,11 @@ function evalExpression(expr) {
         else if (match[2]) {
             s.push(match[2]);
         }
+        else if (/[\s']/.test(token)) ; // spaces and ' are noop
         else {
             var a = s.pop();
             var b = s.pop();
             switch (token) {
-                case "'":
-                    if (b) s.push(b);
-                    s.push(a);
-                    break;
                 case '\\':
                     s.push(a, b);
                     break;
