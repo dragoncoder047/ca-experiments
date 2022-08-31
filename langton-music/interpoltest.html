@@ -4,7 +4,7 @@
         <title>Interpolator test</title>
         <style>
             body { font-family: monospace }
-            table, th, td { border: 1px solid black; border-collapse: collapse }
+            table, th, td { border: 1px solid black; border-collapse: collapse; padding: 10px }
         </style>
     </head>
     <body>
@@ -24,12 +24,17 @@
             const box = document.getElementById('input');
             const btn = document.getElementById('run');
             const out = document.getElementById('out');
-            function appendResult(input, output) {
+            function appendResult(input, output, isError) {
                 var row = document.createElement('tr');
                 var inD = document.createElement('td');
                 var ouD = document.createElement('td');
                 inD.textContent = input;
-                ouD.textContent = output;
+                if (isError) {
+                    ouD.textContent = 'Error: ' + output;
+                    ouD.setAttribute('style', 'color:red');
+                } else {
+                    ouD.textContent = output;
+                }
                 row.appendChild(inD);
                 row.appendChild(ouD);
                 out.appendChild(row);
@@ -43,14 +48,31 @@
                     input = box.value;
                     box.value = '';
                 }
+                if (!input) return;
                 try {
-                    output = processExpressions(input);
+                    appendResult(input, processExpressions(input), false);
                 } catch(e) {
-                    output = e.toString();
+                    appendResult(input, e.toString(), true);
                 }
-                appendResult(input, output);
             }
             btn.addEventListener('click', () => runTest());
+            
+            [
+                'nothing here',
+                '#should #not #change',
+                'error at foo #foobar;',
+                'no #123; change outside of expression',
+                'multiple #123; interspersed #456; interpolations',
+                'top item is: #123\'456\'789;',
+                'resultant string #`foobar`;',
+                'top string #`foobar``barbaz`;',
+                'noooooop #123\'\'\'\'\'\'\'\';',
+                'swap #123\'456\\;',
+                'modulo #123\'2%;',
+                'random #123?;',
+                'ternary yes #`incorrect``correct`1@;',
+                'ternary no #`correct``incorrect`0@;',
+            ].forEach(runTest);
         </script>
     </body>
 </html>
