@@ -70,11 +70,12 @@
                 'random #123?;',
                 'ternary true test:\t\t#`❌``✅`1@;',
                 'ternary false test:\t\t#`✅``❌`0@;',
-                'swap:\t\t#123\'456\\\t\t456=`❌`\\`✅`\\@;',
+                'swap:\t\t#123\'456\\\t\t123=`❌`\\`✅`\\@;',
                 'modulo:\t\t#123\'2%\t\t1=`❌`\\`✅`\\@;',
                 'add:\t\t#123\'2+\t\t125=`❌`\\`✅`\\@;',
                 'add strings:\t\t#`foo``bar`+\t\t`foobar`=`❌`\\`✅`\\@;',
                 'subtract:\t\t#123\'2-\t\t121=`❌`\\`✅`\\@;',
+                'drop:\t\t#123\'123\'2$+\t\t246=`❌`\\`✅`\\@;',
             ].forEach(runTest);
         </script>
     </body>
