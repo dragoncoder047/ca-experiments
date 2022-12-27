@@ -27,10 +27,8 @@ function expand_vars(transition, vars) {
             var varname = transition[i];
             var out = [];
             if (!(varname in vars)) throw "undefined var " + varname;
-            console.log("expanding var " + varname);
             for (var v of vars[varname]) {
                 var temp = transition.map(x => x === varname ? v : x);
-                console.log(temp);
                 out.push(...expand_vars(temp, vars));
             }
             return out;
