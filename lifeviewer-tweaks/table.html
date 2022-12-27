@@ -3,12 +3,102 @@
 
     <head>
         <title>@TABLE memoization speed stress test</title>
-
+        <script src="ruleparse.js"></script>
     </head>
 
     <body>
         <h1>@TABLE memoization speed stress test</h1>
-        <p>Working on it...</p>
+        <p>Paste a rule with a TABLE section or <button id="fetch">Fetch</button><input id="rulename" type="text"
+                placeholder="rule name...">from LifeWiki</p>
+        <p><button id="startbtn">Start</button></p>
+        <p id="statusbar"></p>
+        <textarea id="TABLE" style="width: 100%" rows="20">
+            @RULE test
+            @TABLE
+            n_states: 20
+            neighborhood: Moore
+            symmetries: none
+        </textarea>
+        <p>Loop times are for 200 random calls of the rule function</p>
+        <p>No memoization: <output id="no"></output> ms per loop</p>
+        <p>With memoization: <output id="wm"></output> ms per loop</p>
+        <script>
+            const $ = s => document.querySelector(s);
+            const fetch_button = $("#fetch");
+            const rulename_box = $("#rulename");
+            const rule_area = $("#TABLE");
+            const start_button = $("#startbtn");
+            const none_output = $("#no");
+            const with_output = $("#wm");
+            const statusbar = $("#statusbar");
+            fetch_button.addEventListener("click", async () => {
+                var rule_name = rulename_box.value;
+                if (!rule_name) {
+                    status("Need a rule name", "red");
+                    return;
+                }
+                try {
+                    var response = await fetch(`https://www.conwaylife.com/w/index.php?title=Rule:${rule_name}&action=raw`);
+                } catch(e) {
+                    status(e, "red");
+                    throw e;
+                }
+                if (response.status != 200) {
+                    status(`Fetch returned bad status code (${response.status} ${response.statusText})`, "red");
+                    return;
+                }
+                rule_area.value = await response.text();
+            });
+            function status(s, c = "black") {
+                statusbar.textContent = s;
+                statusbar.style.color = c;
+            }
+            start_button.addEventListener("click", () => {
+                slow = memoized = undefined;
+                (async () => {
+                    var sections = rule_parse(rule_area.value);
+                    if (!sections.TABLE) throw 'No TABLE section';
+                    var r = table_to_function(sections.TABLE);
+                    numstates = r.n_states;
+                    numargs = r.num_neighbors + 1;
+                    slow = r.slowcalc;
+                    memoized = memoize(slow);
+                })().catch(e => {
+                    status(e, "red");
+                    throw e;
+                });
+            });
+            function randstate() {
+                return Math.floor(Math.random() * numstates);
+            }
+            function randenv() {
+                return new Array(numargs).fill().map(randstate);
+            }
+            var slow, memoized;
+            var numstates, numargs;
+            async function test(slowfunc) {
+                while (true) {
+                    try {
+                        await new Promise(r => setTimeout(r, 200));
+                        if (!slow || !memoized) continue;
+                        var i;
+                        performance.mark("slowstart");
+                        for (i = 0; i < 200; i++) slow(...randenv());
+                        performance.mark("slowend");
+                        performance.mark("memostart");
+                        for (i = 0; i < 200; i++) memoized(...randenv());
+                        performance.mark("memoend");
+                        none_output.textContent = Math.round(performance.measure("slow", "slowstart", "slowend").duration);
+                        with_output.textContent = Math.round(performance.measure("memo", "memostart", "memoend").duration);
+                    } catch (e) {
+                        status(e, "red");
+                        console.error(e);
+                        slow = memoized = undefined;
+                    }
+                }
+            }
+            test();
+        </script>
     </body>
 
 </html>
