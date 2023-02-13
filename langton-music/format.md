@@ -1,5 +1,7 @@
 # Langton-Music Format
 
+# This is the OLD version, and is retained for reference only. The new version of Langton-Music is [here](https://dragoncoder047.github.io/langton-music/) -- please use that.
+
 ## Overview
 
 The format is based on 3 sections:
